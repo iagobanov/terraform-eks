@@ -37,3 +37,8 @@ variable "min-size" {
   default     = 1
   description = "Autoscaling Minimum node capacity"
 }
+
+variable "key_name" {
+  default     = "gc-key.pem"
+  description = "Autoscaling Minimum node capacity"
+}

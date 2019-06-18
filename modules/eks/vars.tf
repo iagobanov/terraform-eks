@@ -47,3 +47,8 @@ variable "min-size" {
   type        = "string"
   description = "Autoscaling Minimum node capacity"
 }
+
+variable "key_name" {
+  default     = "gc-key"
+  description = "Autoscaling Minimum node capacity"
+}
