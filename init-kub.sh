@@ -8,13 +8,17 @@ chmod +x ./aws-iam-authenticator
 mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator && export PATH=$HOME/bin:$PATH
 echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
 
+##Export Terraform Data
+terraform output config-map-aws-auth > aws-auth.yaml
+terraform output kubeconfig > kubeconfig
+
 ##Connect to Cluster
 aws sts get-caller-identity
 aws-iam-authenticator -i terraform-eks init
 aws eks --region us-east-1 update-kubeconfig --name terraform-eks
 kubectl get svc
+
+#Run authentication
+export KUBECONFIG=kubeconfig
+kubectl get all
 kubectl apply -f aws-auth.yaml
-
-
-##Export Terraform Data
-terraform output kubeconfig > kubeconfig
