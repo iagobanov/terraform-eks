@@ -5,6 +5,7 @@
 locals {
   config-map-aws-auth = <<CONFIGMAPAWSAUTH
 
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -12,7 +13,7 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: ${aws_iam_role.node.arn}
+    - rolearn: ${aws_iam_role.gc-node.arn}
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
@@ -21,11 +22,12 @@ CONFIGMAPAWSAUTH
 
   kubeconfig = <<KUBECONFIG
 
+
 apiVersion: v1
 clusters:
 - cluster:
-    server: ${aws_eks_cluster.eks.endpoint}
-    certificate-authority-data: ${aws_eks_cluster.eks.certificate_authority.0.data}
+    server: ${aws_eks_cluster.gc.endpoint}
+    certificate-authority-data: ${aws_eks_cluster.gc.certificate_authority.0.data}
   name: kubernetes
 contexts:
 - context:
@@ -40,7 +42,7 @@ users:
   user:
     exec:
       apiVersion: client.authentication.k8s.io/v1alpha1
-      command: iam-authenticator-aws
+      command: heptio-authenticator-aws
       args:
         - "token"
         - "-i"
