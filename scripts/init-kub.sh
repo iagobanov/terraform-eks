@@ -1,5 +1,10 @@
 #!/bin/bash
 
+##Create Cluster
+cd $HOME/terraform-eks/cluster
+terraform init
+terraform apply --auto-approve 
+
 ##Install aws-iam-authenticator
 curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator
 curl -o aws-iam-authenticator.sha256 https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator.sha256
@@ -9,16 +14,22 @@ mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator
 echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
 
 ##Export Terraform Data
-terraform output config-map-aws-auth > aws-auth.yaml
-terraform output kubeconfig > kubeconfig
+cd $HOME/terraform-eks/cluster && terraform output config-map-aws-auth > $HOME/terraform-eks/kubernetes/aws-auth.yaml
+cd $HOME/terraform-eks/cluster && terraform output kubeconfig > $HOME/terraform-eks/kubernetes/kubeconfig
 
 ##Connect to Cluster
 aws sts get-caller-identity
 aws-iam-authenticator -i terraform-eks init
-aws eks --region us-east-1 update-kubeconfig --name terraform-eks
+aws eks --region us-east-1 update-kubeconfig --name gc-demo
 kubectl get svc
 
 #Run authentication
 export KUBECONFIG=kubeconfig
 kubectl get all
-kubectl apply -f aws-auth.yaml
+cd $HOME/terraform-eks/kubernetes kubectl apply -f aws-auth.yaml
+
+
+##Create Nginx Application
+cd $HOME/terraform-eks/kubernetes
+terraform init
+terraform apply --auto-approve 

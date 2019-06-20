@@ -1,12 +1,3 @@
-#
-# EKS Worker Nodes Resources
-#  * IAM role allowing Kubernetes actions to access other AWS services
-#  * EC2 Security Group to allow networking traffic
-#  * Data source to fetch latest EKS worker AMI
-#  * AutoScaling Launch Configuration to configure worker instances
-#  * AutoScaling Group to launch worker instances
-#
-
 resource "aws_iam_role" "gc-node" {
   name = "terraform-eks-gc-node"
 
@@ -101,6 +92,7 @@ data "aws_ami" "eks-worker" {
 # We utilize a Terraform local here to simplify Base64 encoding this
 # information into the AutoScaling Launch Configuration.
 # More information: https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-06-05/amazon-eks-nodegroup.yaml
+
 locals {
   gc-node-userdata = <<USERDATA
 #!/bin/bash -xe
