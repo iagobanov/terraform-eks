@@ -1,4 +1,4 @@
 variable "cluster-name" {
-  default = "terraform-eks"
+  default = "gc-demo"
   type    = "string"
 }

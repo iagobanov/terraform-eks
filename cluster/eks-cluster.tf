@@ -79,8 +79,4 @@ resource "aws_eks_cluster" "gc" {
     "aws_iam_role_policy_attachment.gc-cluster-AmazonEKSClusterPolicy",
     "aws_iam_role_policy_attachment.gc-cluster-AmazonEKSServicePolicy",
   ]
-  
-  provisioner "local-exec" {
-    command = "./init-kub.sh"
-  }  
 }
