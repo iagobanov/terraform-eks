@@ -1,10 +1,10 @@
 variable "namespace_name" {
-  default = "gc-namespace"
+  default = "gamersclube"
   type    = "string"
 }
 
 variable "nginx_pod_name" {
-  default = "gc-service"
+  default = "gcService"
   type    = "string"
 }
 

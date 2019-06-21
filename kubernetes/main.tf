@@ -2,10 +2,10 @@ resource "kubernetes_namespace" "example" {
   metadata {
     name = "${var.namespace_name}"
     labels = {
-      name = "gc-label"
+      name = "gcLabel"
     }
     annotations  = {
-      name = "gc-annotation"
+      name = "gcAnnotation"
     }
   }
 }
